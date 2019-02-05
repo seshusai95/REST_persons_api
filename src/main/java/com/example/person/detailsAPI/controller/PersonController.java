@@ -35,10 +35,10 @@ public HttpStatus insertPerson(@RequestBody Person person)
 }
 
 @GetMapping("/persons/{id}")
-public ResponseEntity<Person> getPerson(@PathVariable int id)
+public Person getPerson(@PathVariable int id)
 {	
 	ResponseEntity<Person> responseEntity=new ResponseEntity<Person>( personService.getPersonFromDAO(id), HttpStatus.OK);	
-	return responseEntity;
+	return responseEntity.getBody();
 }
 @GetMapping("/persons")
 public List<Person> getAllPersons()
