@@ -17,12 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.person.detailsAPI.model.Person;
 import com.example.person.detailsAPI.service.PersonService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(description = "This is Person API Controller")
 @RestController
 @CrossOrigin
 public class PersonController {
 @Autowired
 PersonService personService;
 
+@ApiOperation(value = "Inserts a Person into DB", notes ="You can use this API endpoint to insert the Person into Database given his details. It returns HTTPStatus")
 @PostMapping("/persons")
 public HttpStatus insertPerson(@RequestBody Person person)
 {
@@ -34,18 +39,22 @@ public HttpStatus insertPerson(@RequestBody Person person)
 	else return HttpStatus.BAD_REQUEST;			
 }
 
+@ApiOperation(value = "Gets details of a Person", notes ="You can use this API endpoint to get the details of a Person using his Id. It returns a Person Object")
 @GetMapping("/persons/{id}")
 public Person getPerson(@PathVariable int id)
 {	
 	ResponseEntity<Person> responseEntity=new ResponseEntity<Person>( personService.getPersonFromDAO(id), HttpStatus.OK);	
 	return responseEntity.getBody();
 }
+
+@ApiOperation(value = "It gets a List of Persons", notes ="You can use this API endpoint to get all the Persons present in the DB. It returns a List of Persons")
 @GetMapping("/persons")
 public List<Person> getAllPersons()
 {	
 	return personService.getPersonsFromDAO();
 }
 
+@ApiOperation(value = "Deletes a Person from DB", notes ="You can use this API endpoint to delete a peroson from DataBase given his userId. It returns HTTP Status")
 @DeleteMapping("/persons/{id}")
 public HttpStatus deletePersonById(@PathVariable int id)
 {
@@ -56,6 +65,7 @@ public HttpStatus deletePersonById(@PathVariable int id)
 		return HttpStatus.CONFLICT;
 }
 
+@ApiOperation(value = "Updates Person details", notes ="You can use this API endpoint to update a Person PhoneNumber using his Id and new PhoneNumber. It returns Person Object")
 @PatchMapping("/persons/{id}/{phone}")
 public Person putPhonebyId(@PathVariable int id,@PathVariable long phone)
 {
